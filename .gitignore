@@ -365,3 +365,5 @@ FodyWeavers.xsd
 # added
 .vsidx
 .cache
+.editorconfig
+.assets.cache
