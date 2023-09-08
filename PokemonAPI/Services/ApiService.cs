@@ -2,6 +2,7 @@
 using PokemonAPI.Models;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace PokemonAPI.Services
 {
@@ -24,8 +25,8 @@ namespace PokemonAPI.Services
             if(response != null && response.IsSuccessStatusCode) 
             {
                 var json_response = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<ResultAPI>(json_response);
-                resultApi = result;
+                var result = JsonConvert.DeserializeObject(json_response);
+                //resultApi = result;
             }
 
             return resultApi;

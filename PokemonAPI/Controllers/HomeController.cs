@@ -3,47 +3,42 @@ using PokemonAPI.Models;
 using System.Diagnostics;
 using PokemonAPI.Services;
 using System.Xml.Linq;
+using PokemonAPI.Business;
 
 namespace PokemonAPI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IResultApi _resultApi;
+        //private readonly IResultApi _resultApi;
+        private readonly IPokeapiService _pokeapiService;
 
-        public HomeController(IResultApi resultApi)
+        public HomeController(IPokeapiService pokeapiService)
         {
-            _resultApi = resultApi;
+            //_resultApi = resultApi;
+            _pokeapiService = pokeapiService;
         }
 
         [HttpGet("pokemons")]
         public async Task<IActionResult> Index()
         {
-            ResultAPI result = await _resultApi.GetResults();
-            Pokemon pokemon = new Pokemon();
-            List<Pokemon> pokemonList = new List<Pokemon>();
-            foreach (var poke in result.Results)
-            {
-                if (poke.Name != null || poke.Name != "")
-                {
-                    pokemon.Url = poke.Url;
-                    pokemon = await _resultApi.GetPokemon(poke.Name);
-                    pokemonList.Add(pokemon);
-                }
-            }
-            return Ok(pokemonList);
+            PokeapiBase dataResult = await _pokeapiService.GetPokemonList();
+            PokemonsDataBase pokedata = new PokemonsDataBase();
+            List<PokeapiBaseResult> result = pokedata.GetPokeapiBaseResult(dataResult);
+
+            return Ok(result);
         }
 
-        [HttpGet("pokemons/{name}")]
-        public async Task<IActionResult> Pokemon(string name)
-        {
-            Pokemon pokemon = new Pokemon();
-            if (name != null || name != "") 
-            {
-                pokemon = await _resultApi.GetPokemon(name);
-            }
+        //[HttpGet("pokemons/{name}")]
+        //public async Task<IActionResult> Pokemon(string name)
+        //{
+        //    Pokemon pokemon = new Pokemon();
+        //    if (name != null || name != "") 
+        //    {
+        //        pokemon = await _resultApi.GetPokemon(name);
+        //    }
 
-            return Ok(pokemon);
-        }
+        //    return View(pokemon);
+        //}
 
         public IActionResult Privacy()
         {

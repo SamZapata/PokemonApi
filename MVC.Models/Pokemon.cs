@@ -1,4 +1,4 @@
-﻿namespace PokemonAPI.Models
+﻿namespace MVC.Models
 {
     public class Pokemon
     {

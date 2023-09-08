@@ -1,8 +1,7 @@
 ﻿namespace PokemonAPI.Models
 {
-    public class PokemonAbility
+    public class PokeapiBaseResult
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
     }

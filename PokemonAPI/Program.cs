@@ -4,7 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IResultApi, ApiService>();
+//builder.Services.AddScoped<IResultApi, ApiService>();
+builder.Services.AddScoped<IPokeapiService, PokeapiService>();
 
 var app = builder.Build();
 
