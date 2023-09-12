@@ -23,7 +23,7 @@ namespace PokemonAPI.Services
                 var client = new HttpClient();
                 if (amount > 0)
                 {
-                    for (int i = 1; i < amount; i++)
+                    for (int i = 1; i <= amount; i++)
                     {
                         Pokemon pokemon = new Pokemon();
                         pokemon.Abilities = new List<PokemonAbility>();
@@ -40,7 +40,7 @@ namespace PokemonAPI.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("=================error en el servicio GetPokemonList======");
+                Console.WriteLine("=================error en el servicio GetPokemonList========");
                 Console.WriteLine(ex.Message);
             }
 

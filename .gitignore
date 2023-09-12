@@ -367,3 +367,6 @@ FodyWeavers.xsd
 .cache
 .editorconfig
 .assets.cache
+bin/
+obj/
+*.cache

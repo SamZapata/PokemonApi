@@ -1,5 +1,4 @@
-﻿@model Pokemon
-@{
+﻿@{
     ViewData["Title"] = "Pokemon";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var message = ViewData["Message"];
@@ -44,6 +43,10 @@
         width: 2.5rem;
     }
 
+    table.pokemons-table {
+        border-collapse: collapse;
+    }
+
     .message{
         margin-top: 3rem;
     }
@@ -65,19 +68,36 @@
                 Pokemons por Capturar:
                 <input type="number" name="Amount" id="Amount" class="pokemons-amount" value="5" readonly/>
             </h5>
-            <input type="submit" value="Atrapar" />
+            <input type="submit" value="Buscar" />
         </div>
         <table class="pokemons-table">
             <tr>
-                <th>nombre</th>
-                <th>tipo</th>
-                <th>habilidades</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Habilidades</th>
             </tr>
             @foreach (var p in @pokemons)
             {
                 <tr>
                     <td>@p.Name</td>
-                    @*<td>@p.Abilities[0]</td>*@
+                    
+                    @{
+                        var types = new System.Text.StringBuilder();
+                    }
+                    @foreach (var t in p.Types)
+                    {
+                        types.AppendLine(t.Type.Name);
+                    }
+                    <td>@string.Join(",", types)</td>
+                    
+                    @{
+                        var abilities = new System.Text.StringBuilder();
+                    }
+                    @foreach (var a in p.Abilities)
+                    {
+                        abilities.AppendLine(a.ability.name);
+                    }
+                    <td>@string.Join(",", abilities)</td>
                 </tr>
             }
         </table>

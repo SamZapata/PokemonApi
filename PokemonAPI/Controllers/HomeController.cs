@@ -2,8 +2,7 @@
 using PokemonAPI.Models;
 using System.Diagnostics;
 using PokemonAPI.Services;
-using System.Xml.Linq;
-using PokemonAPI.Business;
+//using PokemonAPI.Business;
 
 namespace PokemonAPI.Controllers
 {
@@ -17,11 +16,6 @@ namespace PokemonAPI.Controllers
             _pokeapiService = pokeapiService;
         }
 
-        //public ActionResult Index()
-        //{
-        //    return View("Index");
-        //}
-
         [HttpGet("/")]
         public async Task<IActionResult> Index()
         {
@@ -29,13 +23,11 @@ namespace PokemonAPI.Controllers
             {
                 int num = 5;
                 List<Pokemon> dataResult = await _pokeapiService.GetPokemonsList(num);
-                PokemonsDataBase pokedata = new PokemonsDataBase();
                 if (dataResult != null && dataResult.Count > 0)
-                {
-                    //List<PokeapiBaseResult> result = pokedata.GetPokeapiBaseResult(dataResult);
+                {                    
                     ViewData["Message"] = "Pokemons capturados: " + dataResult.Count;
                     ViewData["Pokemons"] = dataResult;
-                    return Ok(dataResult);
+                    return View();
                 }
                 else
                 {
@@ -45,7 +37,7 @@ namespace PokemonAPI.Controllers
             }
             catch (Exception ex)
             {
-                Console.Write("=============Error en Home Controller");
+                Console.Write("==========Error Home Controller==========");
                 Console.WriteLine(ex.ToString());
 
                 return BadRequest();

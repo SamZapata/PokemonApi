@@ -5,7 +5,7 @@ namespace PokemonAPI.Models
     public class PokemonAbility
     {
         [JsonProperty(PropertyName = "ability")]
-        public List<Ability> ability { get; set; }
+        public Ability ability { get; set; }
 
         [JsonProperty("is_hidden")]
         public bool is_hidden { get; set; }

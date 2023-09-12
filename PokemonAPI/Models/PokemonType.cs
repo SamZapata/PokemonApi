@@ -2,8 +2,7 @@
 {
     public class PokemonType
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Url { get; set; }
+        public int Slot { get; set; }
+        public Type Type { get; set; }
     }
 }
