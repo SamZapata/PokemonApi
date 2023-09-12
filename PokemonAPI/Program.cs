@@ -1,6 +1,11 @@
-using PokemonAPI.Services;
+﻿using PokemonAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using PokemonAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<PokemonAPIContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PokemonAPIContext") ?? throw new InvalidOperationException("Connection string 'PokemonAPIContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

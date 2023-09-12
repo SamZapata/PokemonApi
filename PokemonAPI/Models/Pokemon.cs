@@ -1,4 +1,6 @@
-﻿namespace PokemonAPI.Models
+﻿using Newtonsoft.Json;
+
+namespace PokemonAPI.Models
 {
     public class Pokemon
     {
@@ -7,7 +9,8 @@
         public string Url { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
-        public List<PokemonAbility> Ability { get; set; }
-        public List<PokemonType> Type { get; set; }
+        [JsonProperty(PropertyName = "abilities")]
+        public List<PokemonAbility> Abilities { get; set; }
+        //public List<PokemonType> Type { get; set; }
     }
 }

@@ -6,6 +6,8 @@ namespace PokemonAPI.Business
     {
         private List<PokeapiBaseResult> listBaseResult;
 
+        //public List
+
         public List<PokeapiBaseResult> GetPokeapiBaseResult(PokeapiBase data)
         {
             PokeapiBaseResult pokeapiBaseResult;

@@ -4,7 +4,7 @@ namespace PokemonAPI.Services
 {
     public interface IPokeapiService
     {
-        Task<PokeapiBase> GetPokemonList();
+        Task<List<Pokemon>> GetPokemonsList(int amount);
         Task<Pokemon> GetPokemon(string name);
     }
 }

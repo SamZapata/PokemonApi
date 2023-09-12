@@ -14,32 +14,44 @@ namespace PokemonAPI.Controllers
 
         public HomeController(IPokeapiService pokeapiService)
         {
-            //_resultApi = resultApi;
             _pokeapiService = pokeapiService;
         }
 
-        [HttpGet("pokemons")]
-        public async Task<IActionResult> Index()
-        {
-            PokeapiBase dataResult = await _pokeapiService.GetPokemonList();
-            PokemonsDataBase pokedata = new PokemonsDataBase();
-            List<PokeapiBaseResult> result = pokedata.GetPokeapiBaseResult(dataResult);
-
-            return Ok(result);
-        }
-
-        //[HttpGet("pokemons/{name}")]
-        //public async Task<IActionResult> Pokemon(string name)
+        //public ActionResult Index()
         //{
-        //    Pokemon pokemon = new Pokemon();
-        //    if (name != null || name != "") 
-        //    {
-        //        pokemon = await _resultApi.GetPokemon(name);
-        //    }
-
-        //    return View(pokemon);
+        //    return View("Index");
         //}
 
+        [HttpGet("/")]
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                int num = 5;
+                List<Pokemon> dataResult = await _pokeapiService.GetPokemonsList(num);
+                PokemonsDataBase pokedata = new PokemonsDataBase();
+                if (dataResult != null && dataResult.Count > 0)
+                {
+                    //List<PokeapiBaseResult> result = pokedata.GetPokeapiBaseResult(dataResult);
+                    ViewData["Message"] = "Pokemons capturados: " + dataResult.Count;
+                    ViewData["Pokemons"] = dataResult;
+                    return Ok(dataResult);
+                }
+                else
+                {
+                    ViewData["Message"] = "No se encontraron Pokemons";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write("=============Error en Home Controller");
+                Console.WriteLine(ex.ToString());
+
+                return BadRequest();
+            }
+
+        }
         public IActionResult Privacy()
         {
             return View();

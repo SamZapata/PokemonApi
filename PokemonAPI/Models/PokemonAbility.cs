@@ -1,9 +1,16 @@
-﻿namespace PokemonAPI.Models
+﻿using Newtonsoft.Json;
+
+namespace PokemonAPI.Models
 {
     public class PokemonAbility
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Url { get; set; }
+        [JsonProperty(PropertyName = "ability")]
+        public List<Ability> ability { get; set; }
+
+        [JsonProperty("is_hidden")]
+        public bool is_hidden { get; set; }
+        
+        [JsonProperty("slot")]
+        public int slot { get; set; }
     }
 }
