@@ -27,7 +27,8 @@ namespace PokemonAPI.Services
                     {
                         Pokemon pokemon = new Pokemon();
                         pokemon.Abilities = new List<PokemonAbility>();
-                        var response = await client.GetAsync($"{_baseUrlPokeapi}/{i}");
+                        int randomId = new Random().Next(1, 1281); //random can will know by the count from pokeapi
+                        var response = await client.GetAsync($"{_baseUrlPokeapi}/{randomId}");
                         if (response != null && response.IsSuccessStatusCode)
                         {
                             var json_response = await response.Content.ReadAsStringAsync();
@@ -35,13 +36,32 @@ namespace PokemonAPI.Services
                             pokemon = result;
                             pokemonsList.Add(pokemon);
                         }
+                        else
+                        {
+                            //pokemon.Name = "Who is that Pokemon?";
+                            //pokemon.Url = "not-url";
+                            //pokemon.Types = new List<PokemonType>();
+                            //PokemonType pokemonType = new PokemonType()
+                            //{
+                            //    slot = 000,
+                            //    type = new PType() { Name = "not-type", Url = "not-url" }
+                            //};
+                            //pokemon.Types.Add(pokemonType);
+                            //pokemon.Abilities = new List<PokemonAbility>();
+                            //PokemonAbility pokemonAbility = new PokemonAbility()
+                            //{
+                            //    slot = 000,
+                            //    ability = new Ability() { name = "not-ability", url = "not-url" }
+                            //};
+                            
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("=================error en el servicio GetPokemonList========");
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
             }
 
             return pokemonsList;

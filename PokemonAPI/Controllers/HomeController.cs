@@ -21,10 +21,10 @@ namespace PokemonAPI.Controllers
         {
             try
             {
-                int num = 5;
-                List<Pokemon> dataResult = await _pokeapiService.GetPokemonsList(num);
+                int amount = 5;
+                List<Pokemon> dataResult = await _pokeapiService.GetPokemonsList(amount);
                 if (dataResult != null && dataResult.Count > 0)
-                {                    
+                {
                     ViewData["Message"] = "Pokemons capturados: " + dataResult.Count;
                     ViewData["Pokemons"] = dataResult;
                     return View();
@@ -43,6 +43,34 @@ namespace PokemonAPI.Controllers
                 return BadRequest();
             }
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(int amount = 5)
+        {
+            try
+            {
+                List<Pokemon> dataResult = await _pokeapiService.GetPokemonsList(amount);
+                if (dataResult != null && dataResult.Count > 0)
+                {
+                    ViewData["Message"] = "Pokemons capturados: " + dataResult.Count;
+                    ViewData["Pokemons"] = dataResult;
+                    ViewData["Amount"] = amount;
+                    return View();
+                }
+                else
+                {
+                    ViewData["Message"] = "No se encontraron Pokemons";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write("==========Error Home Controller==========");
+                Console.WriteLine(ex.ToString());
+
+                return BadRequest();
+            }
         }
         public IActionResult Privacy()
         {
