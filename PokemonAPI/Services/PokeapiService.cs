@@ -27,34 +27,47 @@ namespace PokemonAPI.Services
                     {
                         Pokemon pokemon = new Pokemon();
                         pokemon.Abilities = new List<PokemonAbility>();
-                        int randomId = new Random().Next(1, 1281); //random can will know by the count from pokeapi
+                        int randomId = new Random().Next(1, 1281);
                         var response = await client.GetAsync($"{_baseUrlPokeapi}/{randomId}");
-                        if (response != null && response.IsSuccessStatusCode)
+                        if (response != null && !response.IsSuccessStatusCode)
                         {
-                            var json_response = await response.Content.ReadAsStringAsync();
+                            while (response != null && !response.IsSuccessStatusCode)
+                            {
+                                randomId = new Random().Next(1, 1281);
+                                response = await client.GetAsync($"{_baseUrlPokeapi}/{randomId}");
+                                if (response != null && response.IsSuccessStatusCode)
+                                {
+                                    string json_response = await response.Content.ReadAsStringAsync();
+                                    var result = JsonConvert.DeserializeObject<Pokemon>(json_response);
+                                    pokemon = result;
+                                    pokemonsList.Add(pokemon);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            string json_response = await response.Content.ReadAsStringAsync();
                             var result = JsonConvert.DeserializeObject<Pokemon>(json_response);
                             pokemon = result;
                             pokemonsList.Add(pokemon);
                         }
-                        else
-                        {
-                            //pokemon.Name = "Who is that Pokemon?";
-                            //pokemon.Url = "not-url";
-                            //pokemon.Types = new List<PokemonType>();
-                            //PokemonType pokemonType = new PokemonType()
-                            //{
-                            //    slot = 000,
-                            //    type = new PType() { Name = "not-type", Url = "not-url" }
-                            //};
-                            //pokemon.Types.Add(pokemonType);
-                            //pokemon.Abilities = new List<PokemonAbility>();
-                            //PokemonAbility pokemonAbility = new PokemonAbility()
-                            //{
-                            //    slot = 000,
-                            //    ability = new Ability() { name = "not-ability", url = "not-url" }
-                            //};
-                            
-                        }
+
+                        // To create an offline pokemon
+                        //pokemon.Name = "Who is that Pokemon?";
+                        //pokemon.Url = "not-url";
+                        //pokemon.Types = new List<PokemonType>();
+                        //PokemonType pokemonType = new PokemonType()
+                        //{
+                        //    slot = 000,
+                        //    type = new PType() { Name = "not-type", Url = "not-url" }
+                        //};
+                        //pokemon.Types.Add(pokemonType);
+                        //pokemon.Abilities = new List<PokemonAbility>();
+                        //PokemonAbility pokemonAbility = new PokemonAbility()
+                        //{
+                        //    slot = 000,
+                        //    ability = new Ability() { name = "not-ability", url = "not-url" }
+                        //};
                     }
                 }
             }
@@ -70,5 +83,7 @@ namespace PokemonAPI.Services
         {
             throw new NotImplementedException();
         }
+
+        // Method to refactor the request-response
     }
 }
