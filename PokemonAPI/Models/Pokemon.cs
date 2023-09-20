@@ -12,8 +12,8 @@ namespace PokemonAPI.Models
         
         [JsonProperty]
         public string Url { get; set; }
-        public int Height { get; set; }
-        public int Weight { get; set; }
+        public decimal Height { get; set; }
+        public decimal Weight { get; set; }
         
         [JsonProperty(PropertyName = "abilities")]
         public List<PokemonAbility> Abilities { get; set; }

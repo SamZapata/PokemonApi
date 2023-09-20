@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MVC.Models;
+using PokemonAPI.Models;
 
 namespace PokemonAPI.Data
 {
@@ -14,6 +14,8 @@ namespace PokemonAPI.Data
         {
         }
 
-        public DbSet<MVC.Models.Pokemon> Pokemon { get; set; } = default!;
+        public DbSet<PokemonAPI.Models.Pokemon> Pokemon { get; set; } = default!;
+        public DbSet<PokemonAPI.Models.Ability> Ability { get; set; } = default!;
+        public DbSet<PokemonAPI.Models.PType> PType { get; set; } = default!;
     }
 }

@@ -6,6 +6,7 @@ namespace PokemonAPI.Services
     {
         Task<List<Pokemon>> GetPokemonsList(int amount);
 
-        Task<Pokemon> GetPokemon(string name);  
+        Task<Pokemon> GetPokemon(string name);
+        Task<List<Pokemon>> LoadPokemons();
     }
 }

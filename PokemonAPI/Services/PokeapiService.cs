@@ -8,11 +8,13 @@ namespace PokemonAPI.Services
     public class PokeapiService : IPokeapiService
     {
         private static string _baseUrlPokeapi;
+        private static string _seedPath;
 
         public PokeapiService()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
             _baseUrlPokeapi = builder.GetSection("ApiSettings:BaseUrl").Value;
+            _seedPath = builder.GetSection("ApiSettings:SeedPath").Value;
         }
         public async Task<List<Pokemon>> GetPokemonsList(int amount)
         {
@@ -51,30 +53,15 @@ namespace PokemonAPI.Services
                             pokemon = result;
                             pokemonsList.Add(pokemon);
                         }
-
-                        // To create an offline pokemon
-                        //pokemon.Name = "Who is that Pokemon?";
-                        //pokemon.Url = "not-url";
-                        //pokemon.Types = new List<PokemonType>();
-                        //PokemonType pokemonType = new PokemonType()
-                        //{
-                        //    slot = 000,
-                        //    type = new PType() { Name = "not-type", Url = "not-url" }
-                        //};
-                        //pokemon.Types.Add(pokemonType);
-                        //pokemon.Abilities = new List<PokemonAbility>();
-                        //PokemonAbility pokemonAbility = new PokemonAbility()
-                        //{
-                        //    slot = 000,
-                        //    ability = new Ability() { name = "not-ability", url = "not-url" }
-                        //};
                     }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("=================error en el servicio GetPokemonList========");
-                Console.WriteLine(ex);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("======= Loading JSON File =======");
+                pokemonsList = await LoadPokemons();
             }
 
             return pokemonsList;
@@ -82,6 +69,30 @@ namespace PokemonAPI.Services
         public Task<Pokemon> GetPokemon(string name)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Pokemon>> LoadPokemons()
+        {
+            List<Pokemon> pokemons = new List<Pokemon>();
+            Pokemon loadPokemon = new Pokemon();
+
+            try
+            {
+                using (StreamReader r = new StreamReader(_seedPath))
+                {
+                    string jsonFile = r.ReadToEnd();
+                    loadPokemon = JsonConvert.DeserializeObject<Pokemon>(jsonFile);
+                    pokemons.Add(loadPokemon);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("========== Error in LoadPokemons method ==========");
+                Console.WriteLine($"{ex.Message}");
+            }
+
+            return pokemons;
         }
 
         // Method to refactor the request-response
