@@ -1,0 +1,20 @@
+﻿@model Pokemon
+@{
+    ViewData["Title"] = "Pokemon";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<article class="show-pokemon-section">
+    @if (ViewBag.Pokemon != null && ViewBag.Pokemon.Id > 0)
+    {
+        <h1>@ViewBag.Name</h1>
+        <hr />
+        <p>Altura: @ViewBag.Pokemon.Height cms</p>
+        <p>Peso: @ViewBag.Pokemon.Weight grs</p>
+        <p>Habilidades</p>
+        @foreach (var abilities in ViewBag.Pokemon.Abilities)
+        {
+            <p>@abilities.ability.name</p>
+        }
+    }
+</article>

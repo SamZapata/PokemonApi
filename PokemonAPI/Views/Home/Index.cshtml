@@ -71,7 +71,6 @@
             <p>
                 Ingresa un número: 
                 <input type="number" name="amount" min="1" max="1281" placeholder=@amount />
-                @*<button type="submit" onclick="location.href='@Url.Action("Index", "Home")'">Atrapar</button>*@
                 <input type="submit" value="Atrapar" />
             </p>
         </form>
@@ -90,8 +89,8 @@
             @foreach (var p in @pokemons)
             {
                 <tr>
-                    <td>@p.Name</td>
-                    
+                    <td><a asp-controller="Pokemon" asp-action="Show" asp-route-name="@p.Name.Trim()">@p.Name</a></td>
+
                     @{
                         var types = new System.Text.StringBuilder();
                     }

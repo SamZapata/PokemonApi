@@ -6,41 +6,39 @@ using PokemonAPI.Services;
 
 namespace PokemonAPI.Controllers
 {
-    public class PokemonsController : Controller
+    public class PokemonController : Controller
     {
         private readonly IPokeapiService _pokeapiService;
-        public PokemonsController(IPokeapiService pokeapiService)
+        public PokemonController(IPokeapiService pokeapiService)
         {
-            //_resultApi = resultApi;
             _pokeapiService = pokeapiService;
         }
 
-        //[HttpGet("pokemons")]
-        //public async Task<IActionResult> Index()
-        //{
-        //    PokeapiBase dataResult = await _pokeapiService.GetPokemonList();
-        //    PokemonsDataBase pokedata = new PokemonsDataBase();
-        //    List<PokeapiBaseResult> result = pokedata.GetPokeapiBaseResult(dataResult);
-
-        //    return Ok(result);
-        //}
-
-        //[HttpGet("pokemons/{name}")]
-        //public async Task<IActionResult> Pokemon(string name)
-        //{
-        //    Pokemon pokemon = new Pokemon();
-        //    if (name != null || name != "") 
-        //    {
-        //        pokemon = await _resultApi.GetPokemon(name);
-        //    }
-
-        //    return View(pokemon);
-        //}
-
-        // GET: PokemonsController
-        public IActionResult Index()
+        [Route("pokemon/{name}")]
+        public async Task<IActionResult> Show(string name) 
         {
-            return View();
+            ViewBag.Pokemon = new Pokemon();
+            try
+            {
+                ViewBag.Name = name.ToUpper();
+                var pokemonResult = await _pokeapiService.GetPokemon(name);
+                if (pokemonResult != null && pokemonResult.Id > 0 && pokemonResult.Id < 10000)
+                {
+                    ViewBag.Pokemon = pokemonResult;
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Pokemon = null;
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("============ Erro in Pokemon Controller ============");
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: PokemonsController/Create

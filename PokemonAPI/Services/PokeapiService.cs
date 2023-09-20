@@ -18,7 +18,6 @@ namespace PokemonAPI.Services
         }
         public async Task<List<Pokemon>> GetPokemonsList(int amount)
         {
-            PokeapiBase pokeapiBase = new PokeapiBase();
             List<Pokemon> pokemonsList = new List<Pokemon>();
             try 
             {
@@ -28,7 +27,6 @@ namespace PokemonAPI.Services
                     for (int i = 1; i <= amount; i++)
                     {
                         Pokemon pokemon = new Pokemon();
-                        pokemon.Abilities = new List<PokemonAbility>();
                         int randomId = new Random().Next(1, 1281);
                         var response = await client.GetAsync($"{_baseUrlPokeapi}/{randomId}");
                         if (response != null && !response.IsSuccessStatusCode)
@@ -66,9 +64,35 @@ namespace PokemonAPI.Services
 
             return pokemonsList;
         }
-        public Task<Pokemon> GetPokemon(string name)
+        public async Task<Pokemon> GetPokemon(string name)
         {
-            throw new NotImplementedException();
+            Pokemon pokemon = new Pokemon();
+            try
+            {
+                var client = new HttpClient();
+                if (!string.IsNullOrEmpty(name)) 
+                {
+                    var response = await client.GetAsync($"{_baseUrlPokeapi}/{name}");
+                    if (response != null && response.IsSuccessStatusCode)
+                    {
+                        string json_response = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<Pokemon>(json_response);
+                        pokemon = result;
+                    }
+                    else
+                    {
+                        pokemon.Id = 0; //pokemon not found
+                    }
+                }
+            } 
+            catch (Exception ex) 
+            {
+                Console.WriteLine("========== Error with GetPokemon() Servie ==========");
+                Console.WriteLine(ex.Message);
+                pokemon.Id = 000; //pokemon api error service
+            }
+
+            return pokemon;
         }
 
         public async Task<List<Pokemon>> LoadPokemons()
